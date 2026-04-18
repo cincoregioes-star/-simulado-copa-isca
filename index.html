@@ -560,6 +560,8 @@ h1{
 <audio id="err" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_c6ccf3232f.mp3"></audio>
 
 <script>
+const LINK_CHECKOUT = "https://pay.kiwify.com.br/8rMJ1I1";
+
 const bancoLocal = {
   "Formato2026":[
     {q:"1. Qual mudança tornou a Copa de 2026 a maior da história?",o:["A volta do gol de ouro","A expansão para 48 seleções","A final em ida e volta","A adoção de grupos com 5 equipes","A redução das convocações"],c:1,coment:"A principal transformação da edição de 2026 é a ampliação para 48 seleções, elevando o tamanho do torneio e o número total de partidas."},
@@ -813,11 +815,19 @@ function backToMenu(){
 }
 
 function bloqueado(nomeModulo){
-  alert(
-    "🔒 " + nomeModulo + "\n\n" +
-    "Este módulo faz parte da versão premium.\n\n" +
-    "Na versão completa você desbloqueia todos os módulos e acessa a experiência total do simulador."
+  const confirmar = confirm(
+    "🔥 ACESSO PREMIUM\n\n" +
+    "Módulo selecionado: " + nomeModulo + "\n\n" +
+    "Desbloqueie agora:\n" +
+    "✔ Todos os módulos\n" +
+    "✔ Simulado completo\n" +
+    "✔ Experiência total do desafio\n\n" +
+    "Clique em OK para liberar o acesso."
   );
+
+  if(confirmar){
+    window.open(LINK_CHECKOUT, "_blank");
+  }
 }
 </script>
 </body>
