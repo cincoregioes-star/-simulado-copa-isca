@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gabarito Max - Desafio Copa do Mundo</title>
+
+<style>
+:root{
+  --bg:#070b14;
+  --card:#101726;
+  --card-2:#172033;
+  --gold:#ffd54a;
+  --green:#1fe08f;
+  --blue:#1b6dff;
+  --red:#ff4d6d;
+  --text:#f4f7fb;
+  --muted:#aeb8c8;
+  --border:rgba(255,255,255,.08);
+  --shadow:0 12px 40px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(27,109,255,.18), transparent 30%),
+    radial-gradient(circle at bottom, rgba(31,224,143,.12), transparent 25%),
+    linear-gradient(180deg,#05070d,#0b1220 55%,#07101b);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+header{
+  padding:24px 16px 18px;
+  text-align:center;
+  border-bottom:1px solid rgba(255,213,74,.25);
+  box-shadow:0 0 30px rgba(31,224,143,.08);
+  background:rgba(5,9,18,.72);
+  backdrop-filter:blur(6px);
+}
+
+header img{
+  width:76px;
+  display:block;
+  margin:0 auto 10px;
+  filter:drop-shadow(0 0 12px rgba(255,213,74,.25));
+}
+
+h1{
+  margin:0;
+  font-size:32px;
+  color:var(--gold);
+  letter-spacing:.5px;
+}
+
+.sub{
+  margin-top:6px;
+  color:var(--green);
+  font-size:14px;
+}
+
+.wrap{
+  width:min(980px, 94%);
+  margin:24px auto 40px;
+}
+
+.screen{display:none}
+.active{display:block}
+
+.hero{
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:24px;
+  box-shadow:var(--shadow);
+}
+
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:18px;
+}
+
+@media (max-width: 850px){
+  .hero-grid{grid-template-columns:1fr}
+}
+
+.hero-box,
+.menu-box,
+.quiz-box,
+.result-box{
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+}
+
+.hero-box{
+  padding:24px;
+}
+
+.hero-box h2{
+  margin:0 0 10px;
+  color:var(--gold);
+  font-size:28px;
+  line-height:1.2;
+}
+
+.hero-box p{
+  margin:10px 0;
+  color:#d7def0;
+  line-height:1.6;
+}
+
+.badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:16px;
+}
+
+.badge{
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,213,74,.18);
+  background:rgba(255,213,74,.08);
+  color:#fff3b8;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.menu-box{
+  padding:22px;
+}
+
+.menu-box h3{
+  margin:0 0 14px;
+  color:var(--green);
+  font-size:20px;
+}
+
+.menu-info{
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.6;
+  margin-bottom:16px;
+}
+
+.grid-modulos{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+@media (max-width:560px){
+  .grid-modulos{grid-template-columns:1fr}
+}
+
+.btn{
+  display:block;
+  width:100%;
+  border:none;
+  cursor:pointer;
+  border-radius:14px;
+  padding:15px 16px;
+  font-size:16px;
+  font-weight:bold;
+  transition:.22s ease;
+}
+
+.btn-primary{
+  background:linear-gradient(135deg,var(--gold),#ffbf1f);
+  color:#111;
+}
+
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(255,213,74,.2);
+}
+
+.btn-module{
+  background:linear-gradient(180deg,#16233b,#121c31);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.08);
+  text-align:left;
+}
+
+.btn-module:hover{
+  transform:translateY(-2px);
+  border-color:rgba(255,213,74,.35);
+  box-shadow:0 10px 24px rgba(27,109,255,.14);
+}
+
+.btn-module.locked{
+  background:linear-gradient(180deg,#231d25,#18131b);
+  color:#ffd7de;
+  border:1px solid rgba(255,77,109,.20);
+}
+
+.btn-module.locked:hover{
+  border-color:rgba(255,77,109,.45);
+  box-shadow:0 10px 24px rgba(255,77,109,.12);
+}
+
+.btn-ghost{
+  background:transparent;
+  color:#fff;
+  border:1px solid rgba(255,255,255,.16);
+}
+
+.btn-ghost:hover{
+  border-color:rgba(31,224,143,.45);
+  background:rgba(31,224,143,.06);
+}
+
+.quiz-box{
+  padding:22px;
+}
+
+.quiz-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.modulo-tag{
+  display:inline-block;
+  padding:8px 12px;
+  background:rgba(31,224,143,.1);
+  border:1px solid rgba(31,224,143,.24);
+  border-radius:999px;
+  color:#9df6cf;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.score-mini{
+  color:#dce6fb;
+  font-size:14px;
+  font-weight:bold;
+}
+
+.progress-area{
+  margin:18px 0 10px;
+}
+
+.progress-text{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+.progress{
+  height:10px;
+  border-radius:999px;
+  overflow:hidden;
+  background:rgba(255,255,255,.08);
+}
+
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--green),var(--gold));
+  transition:width .25s ease;
+}
+
+#pergunta{
+  margin:18px 0 16px;
+  font-size:28px;
+  line-height:1.35;
+  color:#fff;
+  text-align:left;
+}
+
+@media (max-width:700px){
+  #pergunta{font-size:22px}
+}
+
+#opcoes{
+  display:grid;
+  gap:12px;
+  margin-top:8px;
+}
+
+.option-btn{
+  text-align:left;
+  background:linear-gradient(180deg,#152139,#10192b);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.1);
+}
+
+.option-btn:hover{
+  transform:translateY(-1px);
+  border-color:rgba(255,213,74,.34);
+}
+
+.option-btn span{
+  display:inline-block;
+  margin-right:10px;
+  color:var(--gold);
+  font-weight:bold;
+}
+
+.correct{
+  background:linear-gradient(180deg,#1fa866,#158d54) !important;
+  color:#fff !important;
+  border-color:rgba(255,255,255,.12) !important;
+}
+
+.wrong{
+  background:linear-gradient(180deg,#d93e5d,#ba2d4b) !important;
+  color:#fff !important;
+  border-color:rgba(255,255,255,.12) !important;
+}
+
+.reveal-correct{
+  outline:2px solid rgba(255,213,74,.6);
+}
+
+#comentario{
+  margin:16px 0 4px;
+  padding:16px;
+  border-radius:16px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  color:#dbe6fb;
+  line-height:1.6;
+  text-align:left;
+  display:none;
+}
+
+.quiz-actions{
+  display:flex;
+  gap:10px;
+  margin-top:18px;
+  flex-wrap:wrap;
+}
+
+.quiz-actions .btn{
+  flex:1;
+  min-width:180px;
+}
+
+.result-box{
+  padding:28px 24px;
+  text-align:center;
+}
+
+.result-box h2{
+  margin:0 0 10px;
+  color:var(--gold);
+  font-size:30px;
+}
+
+.result-sub{
+  color:#dbe6fb;
+  line-height:1.7;
+  margin:8px auto 20px;
+  max-width:700px;
+}
+
+.result-stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin:18px 0 24px;
+}
+
+@media (max-width:760px){
+  .result-stats{grid-template-columns:repeat(2,1fr)}
+}
+
+.stat{
+  padding:18px 14px;
+  border-radius:18px;
+  background:linear-gradient(180deg,#142036,#0f1829);
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.stat strong{
+  display:block;
+  font-size:28px;
+  color:var(--gold);
+  margin-bottom:6px;
+}
+
+.stat span{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.rank-box{
+  margin:18px auto 22px;
+  max-width:680px;
+  padding:18px;
+  border-radius:20px;
+  background:linear-gradient(135deg, rgba(255,213,74,.12), rgba(27,109,255,.12));
+  border:1px solid rgba(255,255,255,.1);
+}
+
+.rank-box h3{
+  margin:0 0 8px;
+  color:#fff5c6;
+  font-size:24px;
+}
+
+.rank-box p{
+  margin:0;
+  color:#e8eefc;
+  line-height:1.6;
+}
+
+.cta-box{
+  margin-top:22px;
+  padding:18px;
+  border-radius:18px;
+  background:rgba(31,224,143,.08);
+  border:1px solid rgba(31,224,143,.18);
+}
+
+.cta-box strong{
+  color:#b7ffe1;
+  display:block;
+  margin-bottom:8px;
+}
+
+.footer-note{
+  text-align:center;
+  color:#90a2bf;
+  font-size:12px;
+  margin-top:14px;
+  line-height:1.6;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Brazilian_CBF_logo.svg" alt="CBF">
+  <h1>GABARITO MAX</h1>
+  <div class="sub">DESAFIO COPA DO MUNDO • EDIÇÃO TORCEDOR RAIZ</div>
+</header>
+
+<div class="wrap">
+  <div id="start" class="screen active hero">
+    <div class="hero-grid">
+      <div class="hero-box">
+        <h2>Você realmente entende de Copa do Mundo ou só acompanha final?</h2>
+        <p>
+          Este desafio foi montado para mexer com memória, rivalidade, nostalgia, recordes,
+          Seleção Brasileira e a nova realidade da Copa de 2026.
+        </p>
+        <p>
+          Não é quiz raso. Aqui tem contexto, comparação histórica, pegadinhas inteligentes,
+          comentários explicativos e nível crescente de dificuldade.
+        </p>
+        <div class="badges">
+          <div class="badge">6 módulos especiais</div>
+          <div class="badge">ranking final por desempenho</div>
+          <div class="badge">questões embaralhadas</div>
+          <div class="badge">experiência premium</div>
+        </div>
+      </div>
+
+      <div class="menu-box">
+        <h3>Escolha um módulo</h3>
+        <div class="menu-info">
+          A versão de demonstração libera 2 módulos completos com 10 questões cada.
+          Os demais módulos aparecem bloqueados para apresentar a experiência premium.
+        </div>
+
+        <div class="grid-modulos">
+          <button class="btn btn-module" onclick="startQuiz('Formato2026')">Formato 2026</button>
+          <button class="btn btn-module" onclick="startQuiz('HistoriaDasCopas')">História das Copas</button>
+          <button class="btn btn-module locked" onclick="bloqueado('Brasil em Copas')">Brasil em Copas 🔒</button>
+          <button class="btn btn-module locked" onclick="bloqueado('Finais e Decisões')">Finais e Decisões 🔒</button>
+          <button class="btn btn-module locked" onclick="bloqueado('Lendas e Recordes')">Lendas e Recordes 🔒</button>
+          <button class="btn btn-module locked" onclick="bloqueado('Rivalidades e Choques')">Rivalidades e Choques 🔒</button>
+        </div>
+
+        <div style="margin-top:14px;">
+          <button class="btn btn-primary" onclick="startModoAleatorio()">Modo Aleatório</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="quiz" class="screen">
+    <div class="quiz-box">
+      <div class="quiz-top">
+        <div class="modulo-tag" id="moduloNome">Módulo</div>
+        <div class="score-mini" id="miniScore">Pontos: 0</div>
+      </div>
+
+      <div class="progress-area">
+        <div class="progress-text">
+          <span id="contador">1/1</span>
+          <span id="acertosParciais">Aproveitamento: 0%</span>
+        </div>
+        <div class="progress">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+      </div>
+
+      <h2 id="pergunta"></h2>
+      <div id="opcoes"></div>
+      <div id="comentario"></div>
+
+      <div class="quiz-actions">
+        <button id="proxima" class="btn btn-primary" onclick="nextQuestion()" style="display:none;">Próxima</button>
+        <button class="btn btn-ghost" onclick="backToMenu()">Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="result" class="screen">
+    <div class="result-box">
+      <h2 id="finalTitulo">Resultado final</h2>
+      <div class="result-sub" id="finalTexto"></div>
+
+      <div class="result-stats">
+        <div class="stat"><strong id="statAcertos">0</strong><span>Acertos</span></div>
+        <div class="stat"><strong id="statErros">0</strong><span>Erros</span></div>
+        <div class="stat"><strong id="statPercentual">0%</strong><span>Aproveitamento</span></div>
+        <div class="stat"><strong id="statModulo">-</strong><span>Módulo</span></div>
+      </div>
+
+      <div class="rank-box">
+        <h3 id="rankTitulo">Torcedor em aquecimento</h3>
+        <p id="rankTexto"></p>
+      </div>
+
+      <div class="cta-box">
+        <strong>Desafie outro módulo e aumente seu nível.</strong>
+        Quanto melhor seu desempenho, maior sua autoridade para dizer que entende de Copa de verdade.
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:18px;">
+        <button class="btn btn-primary" onclick="repeatModule()">Jogar novamente</button>
+        <button class="btn btn-ghost" onclick="backToMenu()">Voltar ao menu</button>
+      </div>
+
+      <div class="footer-note">
+        Gabarito Max • Desafio Copa do Mundo • conteúdo temático com foco em experiência, memória esportiva e engajamento.
+      </div>
+    </div>
+  </div>
+</div>
+
+<audio id="bg" loop src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3"></audio>
+<audio id="ok" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3"></audio>
+<audio id="err" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_c6ccf3232f.mp3"></audio>
+
+<script>
+const bancoLocal = {
+  "Formato2026":[
+    {q:"1. Qual mudança tornou a Copa de 2026 a maior da história?",o:["A volta do gol de ouro","A expansão para 48 seleções","A final em ida e volta","A adoção de grupos com 5 equipes","A redução das convocações"],c:1,coment:"A principal transformação da edição de 2026 é a ampliação para 48 seleções, elevando o tamanho do torneio e o número total de partidas."},
+    {q:"2. Quantos grupos compõem a fase inicial da Copa de 2026?",o:["8","10","12","14","16"],c:2,coment:"A estrutura oficial passou a ser de 12 grupos com 4 seleções em cada um."},
+    {q:"3. Quantas seleções haverá em cada grupo na Copa de 2026?",o:["3","4","5","6","2"],c:1,coment:"Após discussão sobre formatos alternativos, foi mantido o modelo com grupos de 4 equipes."},
+    {q:"4. Quantas partidas totais terá a Copa de 2026?",o:["72","80","96","104","110"],c:3,coment:"Com a expansão do torneio e a criação da fase de 32 avos, o total oficial passou para 104 jogos."},
+    {q:"5. O avanço ao mata-mata após a fase de grupos acontecerá com:",o:["16 seleções","24 seleções","28 seleções","30 seleções","32 seleções"],c:4,coment:"Classificam-se os dois primeiros de cada grupo e os oito melhores terceiros, totalizando 32 equipes no mata-mata."},
+    {q:"6. Além dos dois primeiros colocados, também avançam:",o:["Os quatro melhores terceiros","Os seis melhores terceiros","Os oito melhores terceiros","Todos os terceiros","Somente os terceiros com saldo positivo"],c:2,coment:"A nova lógica premia também os oito melhores terceiros colocados entre os 12 grupos."},
+    {q:"7. Quantos países sediam conjuntamente a Copa de 2026?",o:["2","3","4","5","6"],c:1,coment:"Estados Unidos, México e Canadá dividem a organização, algo inédito na história do torneio."},
+    {q:"8. Qual alternativa reúne corretamente os países-sede de 2026?",o:["Estados Unidos, México e Canadá","Brasil, Argentina e Uruguai","Espanha, Portugal e Marrocos","França, Bélgica e Holanda","Japão, Coreia do Sul e Austrália"],c:0,coment:"A edição de 2026 é a primeira Copa masculina organizada por três países: EUA, México e Canadá."},
+    {q:"9. Em comparação com as edições de 32 seleções, a Copa de 2026 terá:",o:["Menos jogos e mais dias","Mais jogos e mais seleções","Menos seleções e mais grupos","O mesmo número de partidas","Menos grupos e menos jogos"],c:1,coment:"O torneio cresceu tanto em número de participantes quanto em quantidade de partidas."},
+    {q:"10. Qual fase eliminatória foi acrescentada com o novo formato?",o:["Repescagem final","Fase de grupos intermediária","Rodada de 32 seleções","Triangular semifinal","Chave dupla"],c:2,coment:"Com 32 classificados após os grupos, o torneio passa a ter uma etapa eliminatória inicial com 32 equipes."}
+  ],
+  "HistoriaDasCopas":[
+    {q:"1. Em que ano foi disputada a primeira Copa do Mundo?",o:["1928","1930","1932","1934","1936"],c:1,coment:"A primeira Copa do Mundo aconteceu em 1930, no Uruguai, marcando o início do principal torneio de seleções do planeta."},
+    {q:"2. Qual país sediou a primeira edição da Copa?",o:["Argentina","Brasil","Uruguai","Itália","França"],c:2,coment:"O Uruguai recebeu a primeira edição e ainda levantou a taça em casa."},
+    {q:"3. Quem foi o campeão da Copa de 1930?",o:["Argentina","Uruguai","Itália","Brasil","Espanha"],c:1,coment:"O Uruguai derrotou a Argentina na final e entrou para a história como o primeiro campeão mundial."},
+    {q:"4. Quais Copas deixaram de ser realizadas por causa da Segunda Guerra Mundial?",o:["1938 e 1942","1942 e 1946","1946 e 1950","1940 e 1944","1944 e 1948"],c:1,coment:"As edições previstas para 1942 e 1946 não aconteceram em razão do conflito mundial."},
+    {q:"5. Qual seleção ficou marcada pelo 'Maracanazo' em 1950?",o:["Brasil","Uruguai","Itália","Espanha","Hungria"],c:1,coment:"O Uruguai venceu o Brasil no jogo decisivo da fase final e conquistou a Copa em pleno Maracanã."},
+    {q:"6. A Copa de 1958 ficou histórica para o Brasil porque representou:",o:["A primeira participação brasileira","O primeiro título mundial do Brasil","O primeiro vice-campeonato brasileiro","A primeira sede brasileira","A despedida de Pelé"],c:1,coment:"Na Suécia, o Brasil conquistou sua primeira Copa e iniciou uma trajetória lendária."},
+    {q:"7. Em qual país o Brasil foi bicampeão em 1962?",o:["México","Chile","Suécia","Inglaterra","Argentina"],c:1,coment:"A edição de 1962 foi disputada no Chile e terminou com novo título brasileiro."},
+    {q:"8. Qual seleção conquistou a Copa de 1966, único título de sua história?",o:["Holanda","Portugal","Inglaterra","Espanha","Hungria"],c:2,coment:"A Inglaterra venceu em casa e até hoje esse segue sendo seu único título mundial."},
+    {q:"9. A Copa de 1970 é especialmente lembrada porque o Brasil:",o:["Venceu sua primeira final por pênaltis","Conquistou o tricampeonato","Foi sede pela primeira vez","Derrotou a Argentina na final","Jogou sem Pelé"],c:1,coment:"No México, o Brasil levantou o terceiro troféu mundial e eternizou uma das seleções mais admiradas da história."},
+    {q:"10. Qual país foi campeão em 1974 com o título conquistado em casa?",o:["Holanda","Alemanha Ocidental","Itália","Brasil","Argentina"],c:1,coment:"A Alemanha Ocidental derrotou a Holanda na final e venceu a Copa como anfitriã."}
+  ]
+};
+
+const letras = ["A","B","C","D","E"];
+const modulosLiberados = ["Formato2026","HistoriaDasCopas"];
+
+let moduloAtual = "";
+let lista = [];
+let indice = 0;
+let pontos = 0;
+let respondido = false;
+let ultimoModuloJogado = "";
+
+function shuffleArray(arr){
+  const novo = [...arr];
+  for(let i = novo.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [novo[i], novo[j]] = [novo[j], novo[i]];
+  }
+  return novo;
+}
+
+function prepararQuestoes(nomeModulo){
+  const base = bancoLocal[nomeModulo].map(item => {
+    const opcoes = item.o.map((texto, idx) => ({
+      texto,
+      correta: idx === item.c
+    }));
+
+    const opcoesMisturadas = shuffleArray(opcoes);
+    const novoIndiceCorreto = opcoesMisturadas.findIndex(op => op.correta);
+
+    return {
+      q: item.q,
+      o: opcoesMisturadas.map(op => op.texto),
+      c: novoIndiceCorreto,
+      coment: item.coment
+    };
+  });
+
+  return shuffleArray(base).slice(0,10);
+}
+
+function startQuiz(nomeModulo){
+  if(!modulosLiberados.includes(nomeModulo)){
+    bloqueado(formatarNomeModulo(nomeModulo));
+    return;
+  }
+
+  moduloAtual = nomeModulo;
+  ultimoModuloJogado = nomeModulo;
+  lista = prepararQuestoes(nomeModulo);
+  indice = 0;
+  pontos = 0;
+  respondido = false;
+
+  document.getElementById("start").classList.remove("active");
+  document.getElementById("result").classList.remove("active");
+  document.getElementById("quiz").classList.add("active");
+
+  const bg = document.getElementById("bg");
+  bg.volume = 0.12;
+  bg.currentTime = 0;
+  bg.play().catch(()=>{});
+
+  loadQuestion();
+}
+
+function startModoAleatorio(){
+  const escolhido = modulosLiberados[Math.floor(Math.random() * modulosLiberados.length)];
+  startQuiz(escolhido);
+}
+
+function formatarNomeModulo(chave){
+  const mapa = {
+    "Formato2026":"Formato 2026",
+    "HistoriaDasCopas":"História das Copas",
+    "BrasilEmCopas":"Brasil em Copas",
+    "FinaisEDecisoes":"Finais e Decisões",
+    "LendasERecordes":"Lendas e Recordes",
+    "RivalidadesEChoques":"Rivalidades e Choques"
+  };
+  return mapa[chave] || chave;
+}
+
+function loadQuestion(){
+  respondido = false;
+  const atual = lista[indice];
+
+  document.getElementById("moduloNome").innerText = formatarNomeModulo(moduloAtual);
+  document.getElementById("miniScore").innerText = "Pontos: " + pontos;
+  document.getElementById("contador").innerText = (indice + 1) + "/" + lista.length;
+
+  const aproveitamentoParcial = indice === 0 ? 0 : Math.round((pontos / indice) * 100);
+  document.getElementById("acertosParciais").innerText = "Aproveitamento: " + aproveitamentoParcial + "%";
+
+  const progresso = (indice / lista.length) * 100;
+  document.getElementById("progressBar").style.width = progresso + "%";
+
+  document.getElementById("pergunta").innerText = atual.q;
+  document.getElementById("comentario").style.display = "none";
+  document.getElementById("comentario").innerText = "";
+  document.getElementById("proxima").style.display = "none";
+
+  let html = "";
+  atual.o.forEach((op, idx) => {
+    html += `<button class="btn option-btn" onclick="answer(${idx})"><span>${letras[idx]})</span>${op}</button>`;
+  });
+
+  document.getElementById("opcoes").innerHTML = html;
+}
+
+function answer(escolhida){
+  if(respondido) return;
+  respondido = true;
+
+  const atual = lista[indice];
+  const botoes = document.querySelectorAll("#opcoes .option-btn");
+  const somAcerto = document.getElementById("ok");
+  const somErro = document.getElementById("err");
+
+  botoes.forEach((btn, idx) => {
+    btn.disabled = true;
+    if(idx === atual.c){
+      btn.classList.add("correct","reveal-correct");
+    }
+    if(idx === escolhida && escolhida !== atual.c){
+      btn.classList.add("wrong");
+    }
+  });
+
+  if(escolhida === atual.c){
+    pontos++;
+    somAcerto.currentTime = 0;
+    somAcerto.play().catch(()=>{});
+  }else{
+    somErro.currentTime = 0;
+    somErro.play().catch(()=>{});
+  }
+
+  document.getElementById("miniScore").innerText = "Pontos: " + pontos;
+
+  const comentarios = document.getElementById("comentario");
+  comentarios.style.display = "block";
+  comentarios.innerText = atual.coment;
+
+  document.getElementById("proxima").style.display = "block";
+
+  const progressoFinal = ((indice + 1) / lista.length) * 100;
+  document.getElementById("progressBar").style.width = progressoFinal + "%";
+}
+
+function nextQuestion(){
+  indice++;
+  if(indice < lista.length){
+    loadQuestion();
+  }else{
+    showResult();
+  }
+}
+
+function getRanking(percentual){
+  if(percentual >= 90){
+    return {
+      titulo:"LENDA DAS COPAS 👑",
+      texto:"Você não está só acompanhando Copa: você domina contexto, memória, decisões e peso histórico. Esse é nível de quem entra numa conversa sobre futebol e sustenta argumento com autoridade."
+    };
+  }
+  if(percentual >= 75){
+    return {
+      titulo:"TORCEDOR RAIZ 🔥",
+      texto:"Você mostra repertório forte, boa leitura histórica e ótimo domínio dos momentos decisivos. Já está acima do torcedor comum e tem perfil de quem compra a versão completa sem medo."
+    };
+  }
+  if(percentual >= 60){
+    return {
+      titulo:"TORCEDOR CASCA-GROSSA ⚽",
+      texto:"Você tem boa base e consegue competir bem, mas ainda há espaço para afinar memória de finais, recordes e detalhes históricos que separam o curioso do realmente preparado."
+    };
+  }
+  if(percentual >= 40){
+    return {
+      titulo:"EM AQUECIMENTO 🟡",
+      texto:"Você conhece o básico e já tem material para evoluir, mas ainda cai em armadilhas clássicas de Copa. Com mais treino, sobe rápido de nível."
+    };
+  }
+  return {
+    titulo:"PRECISA DE MAIS RITMO 🇧🇷",
+    texto:"Seu resultado mostra que existe interesse, mas ainda falta repertório para encarar questões com cara de desafio premium. A boa notícia é que esse tipo de treino evolui muito rápido."
+  };
+}
+
+function showResult(){
+  document.getElementById("quiz").classList.remove("active");
+  document.getElementById("result").classList.add("active");
+
+  const total = lista.length;
+  const erros = total - pontos;
+  const percentual = Math.round((pontos / total) * 100);
+  const ranking = getRanking(percentual);
+
+  document.getElementById("finalTitulo").innerText = "Resultado final";
+  document.getElementById("finalTexto").innerText =
+    `Você concluiu o módulo "${formatarNomeModulo(moduloAtual)}" com ${pontos} acertos em ${total} questões. Agora já dá para medir seu nível real como torcedor em tema de Copa do Mundo.`;
+
+  document.getElementById("statAcertos").innerText = pontos;
+  document.getElementById("statErros").innerText = erros;
+  document.getElementById("statPercentual").innerText = percentual + "%";
+  document.getElementById("statModulo").innerText = formatarNomeModulo(moduloAtual);
+
+  document.getElementById("rankTitulo").innerText = ranking.titulo;
+  document.getElementById("rankTexto").innerText = ranking.texto;
+}
+
+function repeatModule(){
+  startQuiz(ultimoModuloJogado);
+}
+
+function backToMenu(){
+  const bg = document.getElementById("bg");
+  bg.pause();
+  bg.currentTime = 0;
+
+  document.getElementById("quiz").classList.remove("active");
+  document.getElementById("result").classList.remove("active");
+  document.getElementById("start").classList.add("active");
+}
+
+function bloqueado(nomeModulo){
+  alert(
+    "🔒 " + nomeModulo + "\n\n" +
+    "Este módulo faz parte da versão premium.\n\n" +
+    "Na versão completa você desbloqueia todos os módulos e acessa a experiência total do simulador."
+  );
+}
+</script>
+</body>
+</html>
