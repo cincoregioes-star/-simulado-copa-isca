@@ -404,31 +404,6 @@ h1{
   color:#fff;
   border:1px solid rgba(255,255,255,.16);
 }
-
-.reward-copa-box{
-  margin:18px auto 22px;
-  max-width:720px;
-  padding:18px;
-  border-radius:20px;
-  background:linear-gradient(135deg,rgba(0,208,132,.16),rgba(255,213,74,.16));
-  border:1px solid rgba(255,213,74,.32);
-  color:#eaf2ff;
-  line-height:1.5;
-}
-.reward-copa-box strong{
-  color:var(--gold);
-}
-.reward-copa-box a{
-  display:inline-block;
-  margin-top:12px;
-  background:var(--gold);
-  color:#111;
-  padding:11px 16px;
-  border-radius:999px;
-  font-weight:bold;
-  text-decoration:none;
-}
-
 </style>
 </head>
 
@@ -529,16 +504,6 @@ h1{
       <div class="rank-box">
         <h3 id="rankTitulo">Torcedor em aquecimento</h3>
         <p id="rankTexto"></p>
-      </div>
-
-
-      <div class="reward-copa-box" id="recompensaRadarCopa">
-        🎁 <strong>Recompensa Radar Copa:</strong>
-        ao finalizar este teste, você ganha figurinhas para resgatar no álbum História em Campo 2026.
-        <br>
-        <a href="https://dev-orient-social.github.io/radar-copa-2026-com-album/album/index.html" target="_blank" rel="noopener noreferrer">
-          Abrir álbum e verificar recompensa
-        </a>
       </div>
 
       <div class="quiz-actions">
@@ -822,16 +787,6 @@ function showResult(){
   const percentual = Math.round((pontos / total) * 100);
   const ranking = getRanking(percentual);
 
-  // Radar Copa 2026: registra recompensa ao finalizar o simulado
-  if(window.RadarCopaParceiro && typeof RadarCopaParceiro.registrarSimulado === "function"){
-    RadarCopaParceiro.registrarSimulado({
-      idSimulado: "gabarito-max-teste-copa-2026-" + moduloAtual,
-      total: total,
-      acertos: pontos,
-      finalizado: true
-    });
-  }
-
   document.getElementById("finalTitulo").innerText = "Resultado final";
   document.getElementById("finalTexto").innerText =
     `Você concluiu o módulo "${formatarNomeModulo(moduloAtual)}" com ${pontos} acertos em ${total} questões.`;
@@ -873,6 +828,5 @@ function bloqueado(nomeModulo){
 }
 </script>
 
-  <script src="radar-copa-parceiro.js"></script>
 </body>
 </html>
